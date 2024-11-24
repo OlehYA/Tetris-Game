@@ -24,5 +24,10 @@ namespace Tetris_Game
         {
             InitializeComponent();
         }
+
+        private void Window_KeyDown()
+        {
+
+        }
     }
 }
