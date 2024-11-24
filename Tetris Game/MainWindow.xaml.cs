@@ -98,10 +98,18 @@ namespace Tetris_Game
             }
         }
 
+        private void DrawNextBlock(BlockQueue blockQueue)
+        {
+            Block next = blockQueue.NextBlock;
+            NextImage.Source = blockImages[next.Id];
+        }
+
         private void Draw(GameState gameState)
         {
             DrawGrid(gameState.GameGrid);
             DrawBlock(gameState.CurrentBlock);
+            DrawNextBlock(gameState.BlockQueue);
+            ScoreText.Text = $"Score: {gameState.Score}";
         }
 
         private async Task GameLoop()
@@ -116,6 +124,7 @@ namespace Tetris_Game
             }
 
             GameOverMenu.Visibility = Visibility.Visible;
+            FinalScoreText.Text = $"Score: {gameState}";
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
