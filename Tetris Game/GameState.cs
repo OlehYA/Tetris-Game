@@ -17,6 +17,15 @@ namespace Tetris_Game
             {
                 currentBlock = value;
                 currentBlock.Reset();
+
+                for(int i =0; i <2; i++)
+                {
+                    currentBlock.Move(1, 0);
+                    if(!BlockFrist())
+                    {
+                        currentBlock.Move(-1, 0);
+                    }
+                }
             }
         }
 
