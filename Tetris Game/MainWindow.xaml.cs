@@ -78,6 +78,18 @@ namespace Tetris_Game
             return imageControls;
         }
 
+        private void DrawGrid(GameGrid grid)
+        {
+            for (int r = 0; r< grid.Rows; r++)
+            {
+                for( int c = 0; c< grid.Columns; c++)
+                {
+                    int id = grid[r, c];
+                    imageControls[r,c].Source = tileImage[id];
+                }
+            }
+        }
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
 
