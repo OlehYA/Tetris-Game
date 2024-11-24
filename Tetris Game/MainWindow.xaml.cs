@@ -98,6 +98,12 @@ namespace Tetris_Game
             }
         }
 
+        private void Draw(GameState gameState)
+        {
+            DrawGrid(gameState.GameGrid);
+            DrawBlock(gameState.CurrentBlock);
+        }
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
 
@@ -105,7 +111,7 @@ namespace Tetris_Game
 
         private void GameCanvas_Loaded(object sender, RoutedEventArgs e)
         {
-
+            Draw(gameState);
         }
 
         private void PlayAgain_Click(object sender, RoutedEventArgs e)
