@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 
 namespace Tetris_Game
 {
@@ -37,11 +38,18 @@ namespace Tetris_Game
 
         public int Score { get; private set; }
 
+        public Block HeldBlock { get; private set; }
+
+        public bool CanHold { get; private set; }
+
+
+
         public GameState()
         {
             GameGrid = new GameGrid(22, 10);
             BlockQueue = new BlockQueue();
             CurrentBlock = BlockQueue.GetAndUpdate();
+            CanHold = true;
         }
 
         private bool BlockFrist()
@@ -55,6 +63,28 @@ namespace Tetris_Game
             }
 
             return true;
+        }
+
+        public void HoldBlock()
+        {
+            if(!CanHold)
+            {
+                return;
+            }
+
+            if (HeldBlock == null)
+            {
+                HeldBlock = CurrentBlock;
+                CurrentBlock = BlockQueue.GetAndUpdate();
+            }
+            else
+            {
+                Block tmp = CurrentBlock;
+                CurrentBlock = HeldBlock;
+                HeldBlock = tmp;
+            }
+
+            CanHold = false;
         }
 
         public void RotateBlockCW()
@@ -118,6 +148,7 @@ namespace Tetris_Game
             else
             {
                 CurrentBlock = BlockQueue.GetAndUpdate();
+                CanHold = true;
             }
         }
 
