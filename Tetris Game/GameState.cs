@@ -162,5 +162,35 @@ namespace Tetris_Game
                 PlaceBlock();
             }
         }
+
+        private int TileDropDistance(Position p)
+        {
+            int drop = 0;
+
+            while (GameGrid.IsEmpty(p.Row + drop +1, p.Column))
+            {
+                drop++;
+            }
+
+            return drop;
+        }
+
+        public int BlockDropDistanse()
+        {
+            int drop = GameGrid.Rows;
+
+            foreach(Position p in CurrentBlock.TilePositions())
+            {
+                drop = Math.Min(drop, TileDropDistance(p));
+            }
+
+            return drop;
+        }
+
+        public void DropBlock()
+        {
+            CurrentBlock.Move(BlockDropDistanse(), 0);
+            PlaceBlock();
+        }
     }
 }
