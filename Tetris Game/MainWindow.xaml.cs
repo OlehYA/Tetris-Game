@@ -114,6 +114,8 @@ namespace Tetris_Game
                 gameState.MoveBlockDown();
                 Draw(gameState);
             }
+
+            GameOverMenu.Visibility = Visibility.Visible;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
