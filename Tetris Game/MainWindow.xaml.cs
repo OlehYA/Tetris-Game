@@ -20,7 +20,7 @@ namespace Tetris_Game
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ImageSource[] tileImage = new ImageSource[]
+        private readonly ImageSource[] tileImages = new ImageSource[]
         {
             new BitmapImage(new Uri("Assets/TileEmpty.png", UriKind.Relative)),
             new BitmapImage(new Uri("Assets/TileCyan.png", UriKind.Relative)),
@@ -85,8 +85,16 @@ namespace Tetris_Game
                 for( int c = 0; c< grid.Columns; c++)
                 {
                     int id = grid[r, c];
-                    imageControls[r,c].Source = tileImage[id];
+                    imageControls[r,c].Source = tileImages[id];
                 }
+            }
+        }
+
+        private void DrawBlock(Block block)
+        {
+            foreach (Position p in block.TilePositions())
+            {
+                imageControls[p.Row, p.Column].Source = tileImages[block.Id];
             }
         }
 
