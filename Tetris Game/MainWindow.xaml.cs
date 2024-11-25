@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace Tetris_Game
@@ -44,6 +45,7 @@ namespace Tetris_Game
             new BitmapImage(new Uri("Assets/Block-Z.png", UriKind.Relative)),
         };
 
+        private bool isMusicPlaying = false;
         private readonly Image[,] imageControls;
         private readonly int maxDelay = 1000;
         private readonly int minDelay = 75;
@@ -57,14 +59,33 @@ namespace Tetris_Game
             imageControls = SetupGameCanvas(gameState.GameGrid);
         }
 
+        private void MediaElement_MediaFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            MessageBox.Show("Failed to load media: " + e.ErrorException.Message);
+        }
+
+        private void MusicButton_Click(object sender, RoutedEventArgs e)
+        {
+            mediaElement.Source = new Uri(@"D:\Книга С#\MyProject\TetrisAssets\tsound.mp3");
+            if (isMusicPlaying)
+            {
+                mediaElement.Stop();
+            }
+            else
+            {
+                mediaElement.Play();
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
         private Image[,] SetupGameCanvas(GameGrid grid)
         {
             Image[,] imageControls = new Image[grid.Rows, grid.Columns];
             int cellSize = 25;
 
-            for(int r =0; r< grid.Rows; r++)
+            for (int r = 0; r < grid.Rows; r++)
             {
-                for(int c =0; c<grid.Columns; c++)
+                for (int c = 0; c < grid.Columns; c++)
                 {
                     Image imageControl = new Image
                     {
@@ -72,10 +93,10 @@ namespace Tetris_Game
                         Height = cellSize
                     };
 
-                    Canvas.SetTop(imageControl, (r -2) * cellSize +10);
+                    Canvas.SetTop(imageControl, (r - 2) * cellSize + 10);
                     Canvas.SetLeft(imageControl, c * cellSize);
                     GameCanvas.Children.Add(imageControl);
-                    imageControls[r,c] = imageControl;
+                    imageControls[r, c] = imageControl;
                 }
             }
             return imageControls;
@@ -83,13 +104,13 @@ namespace Tetris_Game
 
         private void DrawGrid(GameGrid grid)
         {
-            for (int r = 0; r< grid.Rows; r++)
+            for (int r = 0; r < grid.Rows; r++)
             {
-                for( int c = 0; c< grid.Columns; c++)
+                for (int c = 0; c < grid.Columns; c++)
                 {
                     int id = grid[r, c];
                     imageControls[r, c].Opacity = 1;
-                    imageControls[r,c].Source = tileImages[id];
+                    imageControls[r, c].Source = tileImages[id];
                 }
             }
         }
@@ -111,7 +132,7 @@ namespace Tetris_Game
 
         private void DrawHeldBlock(Block heldBlock)
         {
-            if(heldBlock == null)
+            if (heldBlock == null)
             {
                 HoldImage.Source = blockImages[0];
             }
@@ -125,10 +146,10 @@ namespace Tetris_Game
         {
             int dropDistance = gameState.BlockDropDistanse();
 
-            foreach(Position p in block.TilePositions())
+            foreach (Position p in block.TilePositions())
             {
                 imageControls[p.Row + dropDistance, p.Column].Opacity = 0.25;
-                imageControls[p.Row + dropDistance, p.Column].Source =tileImages[block.Id];
+                imageControls[p.Row + dropDistance, p.Column].Source = tileImages[block.Id];
             }
         }
 
@@ -146,7 +167,7 @@ namespace Tetris_Game
         {
             Draw(gameState);
 
-            while(!gameState.GameOver)
+            while (!gameState.GameOver)
             {
                 int delay = Math.Max(minDelay, maxDelay - (gameState.Score * delayDecrease));
                 await Task.Delay(delay);
@@ -160,7 +181,7 @@ namespace Tetris_Game
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if(gameState.GameOver)
+            if (gameState.GameOver)
             {
                 return;
             }
@@ -188,6 +209,9 @@ namespace Tetris_Game
                 case Key.Space:
                     gameState.DropBlock();
                     break;
+                case Key.M:
+                    MusicButton_Click(sender,e);
+                    break;
                 default:
                     return;
             }
@@ -196,7 +220,7 @@ namespace Tetris_Game
 
         private async void GameCanvas_Loaded(object sender, RoutedEventArgs e)
         {
-          await  GameLoop(); 
+            await GameLoop();
         }
 
         private async void PlayAgain_Click(object sender, RoutedEventArgs e)

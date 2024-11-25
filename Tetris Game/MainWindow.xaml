@@ -10,7 +10,30 @@
         Foreground="White"
         FontFamily="Segoe UI Light" FontSize="28"
         KeyDown="Window_KeyDown">
+
+    <Window.Resources>
+        <Style x:Key="RoundButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse Fill="{TemplateBinding Background}" Stroke="Gray" StrokeThickness="2"/>
+                            <Image Source="{TemplateBinding Content}" Stretch="Uniform" 
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="100"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </Window.Resources>
+
+
     <Grid>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -43,6 +66,10 @@
                    Text="Score: "
                    Margin="0, 10"
                    TextAlignment="Center"/>
+
+        <Button x:Name="MusicButton" Style="{StaticResource RoundButtonStyle}" 
+                Content="Sound/note.png" Click="MusicButton_Click" IsTabStop="False" Focusable="False"/>
+
 
         <StackPanel Grid.Row="1"
                     Grid.Column="0"
@@ -90,7 +117,8 @@
                         Padding="5"
                         Click="PlayAgain_Click"/>
             </StackPanel>
+          
         </Grid>
-
+        <MediaElement x:Name="mediaElement" LoadedBehavior="Manual" UnloadedBehavior="Stop" Source="Sound/tsound.mp3" Volume="0.5" MediaFailed="MediaElement_MediaFailed"/>
     </Grid>
 </Window>

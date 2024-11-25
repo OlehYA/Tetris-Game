@@ -192,5 +192,7 @@ namespace Tetris_Game
             CurrentBlock.Move(BlockDropDistanse(), 0);
             PlaceBlock();
         }
+
+
     }
 }
